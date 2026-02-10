@@ -88,25 +88,29 @@ function yesClick() {
 
 function showMeme() {
   document.body.innerHTML = `
-    <div id="finalContent" style="
+    <div id="wrapper" style="
       position: relative;
       z-index: 2;
-      text-align: center;
-      font-family: Arial;
-      background: #ffe6ec;
       min-height: 100vh;
-      padding-top: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffe6ec;
+      font-family: Arial, sans-serif;
     ">
-      <h1>🎉💖 YAY 💖🎉</h1>
-      <p style="font-size:20px;">Ich liebe dich, Demet ❤️</p>
-      <img class="meme" 
-           src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg">
+      <div style="text-align:center;">
+        <h1>🎉💖 YAY 💖🎉</h1>
+        <p style="font-size:20px;">Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️</p>
+        <img 
+          src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg"
+          style="max-width:320px;border-radius:15px;"
+        >
+      </div>
     </div>
 
     <canvas id="confetti" style="
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     "></canvas>
