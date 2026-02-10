@@ -2,8 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️❤️ Eine Frage an meinen Lieblingsmensch ❤️❤️</title>
-
+<title>❤️ Lustiger NEIN-Button ❤️</title>
 <style>
 body {
   margin: 0;
@@ -48,6 +47,7 @@ button {
 
 #no {
   position: fixed;
+  top: 50%;
   left: 350px;
   transform: translateY(-50%);
   background: #ddd;
@@ -65,7 +65,6 @@ button {
 }
 </style>
 </head>
-
 <body>
 
 <div class="container" id="questionBox">
@@ -77,14 +76,13 @@ button {
 <script>
 let yesSize = 1;
 let yesClickCount = 0;
-
 const noBtn = document.getElementById("no");
 
+// NEIN-Button zufällig weglaufen
 document.addEventListener('mousemove', (e) => {
-  moveNoButton(e);
+  moveNoButtonRandom(e);
 });
 
-// NEIN-Button läuft immer weg, aber bleibt innerhalb des Bildschirms
 function moveNoButtonRandom(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
@@ -112,6 +110,7 @@ function moveNoButtonRandom(e) {
   }
 }
 
+// JA-Button
 function yesClick() {
   yesSize += 0.3;
   yesClickCount++;
@@ -119,16 +118,11 @@ function yesClick() {
   yesBtn.style.transform = `scale(${yesSize})`;
   yesBtn.style.background = "red";
 
-  // Explosion nach 4 Klicks
-  if (yesClickCount === 4) {
-    explodeHearts(yesBtn);
-  }
-
-  if (yesSize >= 2) {
-    showMeme();
-  }
+  if (yesClickCount === 4) explodeHearts(yesBtn);
+  if (yesSize >= 2) showMeme();
 }
 
+// Herz-Explosion
 function explodeHearts(element) {
   const rect = element.getBoundingClientRect();
   const xCenter = rect.left + rect.width / 2;
@@ -152,15 +146,13 @@ function explodeHearts(element) {
     heart.animate([
       { transform: `translate(0, 0)`, opacity: 1 },
       { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
-    ], {
-      duration: duration,
-      easing: "ease-out"
-    });
+    ], {duration: duration, easing: "ease-out"});
 
     setTimeout(() => heart.remove(), duration);
   }
 }
 
+// Video & Herz-Konfetti
 function showMeme() {
   const container = document.getElementById("questionBox");
   container.innerHTML = `
@@ -199,12 +191,10 @@ function showMeme() {
 
   const video = document.querySelector("video");
   video.muted = false;
-  video.play().catch(() => {
-    console.log("Ton konnte nicht abgespielt werden. Klicke auf das Video, um Ton zu hören.");
-  });
+  video.play().catch(() => console.log("Ton konnte nicht abgespielt werden."));
 }
 
-/* Herz-Konfetti im Hintergrund */
+// Herz-Konfetti
 function startConfettiHearts() {
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
@@ -247,13 +237,11 @@ function startConfettiHearts() {
   }
 
   setInterval(draw, 20);
-
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   });
 }
 </script>
-
 </body>
 </html>
