@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️❤️ Eine Frage an meinen Liblingsmensch ❤️❤️</title>
+<title>❤️❤️ Eine Frage an meinen Lieblingsmensch ❤️❤️</title>
 
 <style>
 body {
@@ -51,6 +51,7 @@ button {
   max-width: 320px;
   border-radius: 15px;
   margin-top: 20px;
+  cursor: pointer; /* macht deutlich, dass man klicken kann */
 }
 </style>
 </head>
@@ -102,11 +103,10 @@ function showMeme() {
     ">
         <h1>🎉💖 YAYYYY 💖🎉</h1>
         <p style="font-size:20px;">Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️</p>
-        <a href="https://de.pinterest.com/pin/746964288296543358/" target="_blank">
-          <img class="meme" 
-               src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg" 
-               style="max-width: 80%; border-radius: 15px;">
-        </a>
+        <img class="meme" 
+             src="746964288296543358.jpg" 
+             onclick="window.open('https://de.pinterest.com/pin/746964288296543358/', '_blank')"
+             style="max-width: 80%; border-radius: 15px;">
     </div>
 
     <canvas id="confetti" style="
@@ -138,9 +138,9 @@ function startConfetti() {
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(255,0,100,0.8)";
     confetti.forEach(c => {
       ctx.beginPath();
+      ctx.fillStyle = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},0.8)`;
       ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
       ctx.fill();
     });
