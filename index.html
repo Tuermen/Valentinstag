@@ -22,6 +22,8 @@ body {
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 1;
 }
 
 h1 {
@@ -51,7 +53,6 @@ button {
   max-width: 320px;
   border-radius: 15px;
   margin-top: 20px;
-  cursor: pointer;
 }
 </style>
 </head>
@@ -87,59 +88,48 @@ function yesClick() {
 }
 
 function showMeme() {
-  document.body.innerHTML = `
-    <canvas id="confetti" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    "></canvas>
-
-    <div id="finalContent" style="
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 100vh;
-      width: 100vw;
-      background: #ffe6ec;
-      overflow: hidden;
-      padding: 20px;
-    ">
-        <h1>🎉💖 YAYYYY 💖🎉</h1>
-        <p style="font-size:20px; margin-bottom: 20px;">
-          Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️
-        </p>
-        <video class="meme" 
-               src="KSI-YESYESYESNONONO(GreenScreen).mp4" 
-               autoplay 
-               loop 
-               controls
-               style="
-                 width: 7cm;
-                 height: 7cm;
-                 border-radius: 10px;
-                 display: block;
-                 object-fit: cover;
-                 z-index: 2;
-               ">
-        </video>
-    </div>
+  const container = document.getElementById("questionBox");
+  container.innerHTML = `
+    <h1>🎉💖 YAYYYY 💖🎉</h1>
+    <p style="font-size:20px; margin-bottom: 20px;">
+      Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️
+    </p>
+    <video class="meme" 
+           src="KSI-YESYESYESNONONO(GreenScreen).mp4" 
+           autoplay 
+           loop 
+           controls
+           style="
+             width: 7cm;
+             height: 7cm;
+             border-radius: 10px;
+             display: block;
+             object-fit: cover;
+           ">
+    </video>
   `;
+
+  // Konfetti-Canvas hinzufügen, falls noch nicht vorhanden
+  if (!document.getElementById("confetti")) {
+    const canvas = document.createElement("canvas");
+    canvas.id = "confetti";
+    canvas.style.position = "fixed";
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.zIndex = 0;
+    canvas.style.pointerEvents = "none";
+    document.body.appendChild(canvas);
+  }
 
   startConfetti();
 
-  // Video Ton aktivieren und abspielen
+  // Video Ton abspielen
   const video = document.querySelector("video");
-  video.muted = false; // Ton an
+  video.muted = false;
   video.play().catch(() => {
-    console.log("Ton konnte nicht abgespielt werden – möglicherweise Autoplay blockiert.");
+    console.log("Ton konnte nicht abgespielt werden. Klicke auf das Video, um Ton zu hören.");
   });
 }
 
@@ -150,36 +140,50 @@ function startConfetti() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const confetti = Array.from({length: 150}, () => ({
+  const confetti = Array.from({length: 200}, () => ({
     x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
+    y: Math.random() * canvas.height - canvas.height,
     r: Math.random() * 6 + 2,
-    d: Math.random() * 3 + 2,
-    color: `hsl(${Math.random()*360}, 100%, 50%)`
+    d: Math.random() * 5 + 2,
+    color: `hsl(${Math.random()*360}, 100%, 50%)`,
+    tilt: Math.random() * 10 - 10,
+    tiltAngleIncrement: Math.random() * 0.07 + 0.05,
+    tiltAngle: 0
   }));
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     confetti.forEach(c => {
       ctx.beginPath();
-      ctx.fillStyle = c.color;
-      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.lineWidth = c.r;
+      ctx.strokeStyle = c.color;
+      ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+      ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+      ctx.stroke();
     });
     update();
   }
 
   function update() {
     confetti.forEach(c => {
-      c.y += c.d;
+      c.tiltAngle += c.tiltAngleIncrement;
+      c.y += (Math.cos(c.d) + 3 + c.r/2)/2;
+      c.tilt = Math.sin(c.tiltAngle) * 15;
+
       if (c.y > canvas.height) {
-        c.y = 0;
+        c.y = -10;
         c.x = Math.random() * canvas.width;
       }
     });
   }
 
   setInterval(draw, 20);
+
+  // Anpassung bei Fenstergröße
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
 }
 </script>
 
