@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Eine wichtige Frage ❤️</title>
+<title>❤️❤️ Eine Frage an meinen Liblingsmensch ❤️❤️</title>
 
 <style>
 body {
@@ -88,12 +88,28 @@ function yesClick() {
 
 function showMeme() {
   document.body.innerHTML = `
-    <div style="text-align:center;">
+    <div id="finalContent" style="
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      font-family: Arial;
+      background: #ffe6ec;
+      min-height: 100vh;
+      padding-top: 50px;
+    ">
       <h1>🎉💖 YAY 💖🎉</h1>
-      <p>Ich liebe dich, Demet ❤️</p>
-      <img class="meme" src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg">
+      <p style="font-size:20px;">Ich liebe dich, Demet ❤️</p>
+      <img class="meme" 
+           src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg">
     </div>
-    <canvas id="confetti"></canvas>
+
+    <canvas id="confetti" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    "></canvas>
   `;
   startConfetti();
 }
