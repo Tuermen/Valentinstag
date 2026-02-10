@@ -47,8 +47,7 @@ button {
 }
 
 #no {
-  position: fixed; 
-  left: 300px; /* Start neben JA */
+  position: absolute;
   background: #ddd;
   z-index: 1;
 }
@@ -70,7 +69,7 @@ button {
 <div class="container" id="questionBox">
   <h1>Demet,<br>willst du meine Valentine sein? ❤️</h1>
   <button id="yes" onclick="yesClick()">JA 💖</button>
-  <button id="no">NEIN 😅</button>
+  <button id="no" onmouseover="moveNoButton()">NEIN 😅</button>
 </div>
 
 <script>
