@@ -2,62 +2,140 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Bestätigung erforderlich</title>
+<title>Eine wichtige Frage ❤️</title>
+
 <style>
 body {
+  margin: 0;
+  height: 100vh;
   font-family: Arial, sans-serif;
-  background: #f2f2f2;
+  background: #ffe6ec;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  overflow: hidden;
 }
-.box {
+
+.container {
   background: white;
   padding: 30px;
-  border-radius: 10px;
-  width: 360px;
+  border-radius: 15px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+
+h1 {
+  margin-bottom: 25px;
+}
+
 button {
-  padding: 10px 20px;
+  font-size: 18px;
+  padding: 12px 25px;
   margin: 10px;
-  font-size: 16px;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
+
+#yes {
+  background: pink;
+  transition: transform 0.3s, background 0.3s;
+}
+
 #no {
-  position: relative;
+  position: absolute;
+  background: #ddd;
+}
+
+.meme {
+  max-width: 320px;
+  border-radius: 15px;
+  margin-top: 20px;
 }
 </style>
 </head>
 
 <body>
-<div class="box">
-  <h2>⚠️ Bestätigung erforderlich</h2>
-  <p>Willst du wissen,<br>wie sehr dein Mann dich liebt? 💘</p>
 
-  <button onclick="ja()">JA ❤️</button>
-  <button id="no" onmouseover="weg()">NEIN ❌</button>
+<div class="container" id="questionBox">
+  <h1>Demet,<br>willst du meine Valentine sein? ❤️</h1>
+
+  <button id="yes" onclick="yesClick()">JA 💖</button>
+  <button id="no" onmouseover="runAway()">NEIN 😅</button>
 </div>
 
 <script>
-function weg() {
-  const btn = document.getElementById("no");
-  btn.style.left = Math.random() * 200 - 100 + "px";
-  btn.style.top  = Math.random() * 200 - 100 + "px";
+let yesSize = 1;
+
+function runAway() {
+  const noBtn = document.getElementById("no");
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
 }
 
-function ja() {
+function yesClick() {
+  yesSize += 0.3;
+  const yesBtn = document.getElementById("yes");
+  yesBtn.style.transform = `scale(${yesSize})`;
+  yesBtn.style.background = "red";
+
+  if (yesSize >= 2) {
+    showMeme();
+  }
+}
+
+function showMeme() {
   document.body.innerHTML = `
-    <div style="text-align:center;font-family:Arial;">
-      <h1>💖 Überraschung 💖</h1>
-      <p>Frohen Valentinstag, meine Liebe!</p>
-      <p>Ich liebe dich mehr,<br>als du jemals „Nein“ klicken könntest 😄</p>
-      <p>❤️❤️❤️</p>
+    <div style="text-align:center;">
+      <h1>🎉💖 YAY 💖🎉</h1>
+      <p>Ich liebe dich, Demet ❤️</p>
+      <img class="meme" src="https://i.pinimg.com/564x/74/69/64/746964288296543358.jpg">
     </div>
+    <canvas id="confetti"></canvas>
   `;
+  startConfetti();
+}
+
+/* Konfetti */
+function startConfetti() {
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confetti = Array.from({length: 150}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 6 + 2,
+    d: Math.random() * 5 + 2
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(255,0,100,0.8)";
+    confetti.forEach(c => {
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    update();
+  }
+
+  function update() {
+    confetti.forEach(c => {
+      c.y += c.d;
+      if (c.y > canvas.height) {
+        c.y = 0;
+        c.x = Math.random() * canvas.width;
+      }
+    });
+  }
+
+  setInterval(draw, 20);
 }
 </script>
+
 </body>
 </html>
