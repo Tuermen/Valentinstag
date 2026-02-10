@@ -11,6 +11,10 @@ body {
   font-family: Arial, sans-serif;
   background: #ffe6ec;
   overflow: hidden;
+  
+  display: flex;              /* Flexbox aktivieren */
+  justify-content: center;    /* horizontal zentrieren */
+  align-items: center;        /* vertikal zentrieren */
 }
 
 .container {
@@ -22,7 +26,7 @@ body {
   position: relative;
   z-index: 1;
   max-width: 90%;
-  margin: 50px auto;
+  /* margin entfernen, Flexbox zentriert automatisch */
 }
 
 h1 {
