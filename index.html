@@ -44,10 +44,17 @@ button {
 #yes {
   background: pink;
   transition: transform 0.3s, background 0.3s;
+  position: relative;
+  z-index: 1;
 }
 
 #no {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 200px; /* Start neben JA */
+  transform: translateY(-50%);
+  background: #ddd;
+  z-index: 1;
 }
 
 .meme {
@@ -67,17 +74,46 @@ button {
 <div class="container" id="questionBox">
   <h1>Demet,<br>willst du meine Valentine sein? ❤️</h1>
   <button id="yes" onclick="yesClick()">JA 💖</button>
-  <button id="no" onmouseover="runAway()">NEIN 🥹</button>
+  <button id="no">NEIN 🥹</button>
 </div>
 
 <script>
 let yesSize = 1;
 let yesClickCount = 0;
 
-function weg() {
-  const btn = document.getElementById("no");
-  btn.style.left = Math.random() * 200 - 100 + "px";
-  btn.style.top  = Math.random() * 200 - 100 + "px";
+const noBtn = document.getElementById("no");
+
+document.addEventListener('mousemove', (e) => {
+  moveNoButton(e);
+});
+
+// Funktion: dynamisch vom Mauszeiger weg bewegen
+function moveNoButton(e) {
+  const rect = noBtn.getBoundingClientRect();
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+
+  // Abstand zwischen Maus und Button
+  const dx = mouseX - (rect.left + rect.width / 2);
+  const dy = mouseY - (rect.top + rect.height / 2);
+  const distance = Math.sqrt(dx*dx + dy*dy);
+
+  // Wenn Maus nahe, Button bewegen
+  if (distance < 150) {
+    // Richtung vom Mauszeiger weg
+    const angle = Math.atan2(dy, dx);
+    const moveDistance = 30; // Geschwindigkeit
+
+    let newX = rect.left - Math.cos(angle) * moveDistance;
+    let newY = rect.top - Math.sin(angle) * moveDistance;
+
+    // Begrenzung: Button bleibt innerhalb des Bildschirms
+    newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
+    newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+  }
 }
 
 function yesClick() {
