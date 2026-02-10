@@ -83,7 +83,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Dynamischer NEIN-Button, immer sichtbar, niemals außerhalb des Fensters
-let noAngle = Math.random() * 2 * Math.PI; // zufällige Start-Richtung für NEIN
+let noAngle = Math.random() * 2 * Math.PI; // aktuelle Richtung
+let noSpeed = 5; // Geschwindigkeit in Pixeln pro Frame
 
 function moveNoButton(e) {
   const rect = noBtn.getBoundingClientRect();
@@ -95,24 +96,41 @@ function moveNoButton(e) {
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  if (distance < 150) { // Trigger Abstand: Button bewegt sich
-    // Ändere Winkel leicht zufällig, um dynamische Richtung zu erzeugen
-    noAngle += (Math.random() - 0.5) * 0.5;
-
-    const moveDistance = 50; // Schrittweite
-    let newX = rect.left + Math.cos(noAngle) * moveDistance;
-    let newY = rect.top + Math.sin(noAngle) * moveDistance;
-
-    // Bildschirm-Grenzen prüfen
-    if (newX < 0) { newX = 0; noAngle = Math.PI - noAngle; }
-    if (newX > window.innerWidth - rect.width) { newX = window.innerWidth - rect.width; noAngle = Math.PI - noAngle; }
-    if (newY < 0) { newY = 0; noAngle = -noAngle; }
-    if (newY > window.innerHeight - rect.height) { newY = window.innerHeight - rect.height; noAngle = -noAngle; }
-
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
+  // Wenn Maus nahe, wähle zufällige neue Richtung
+  if (distance < 150) {
+    noAngle = Math.random() * 2 * Math.PI;
   }
+
+  // Bewege Button in aktueller Richtung
+  let newX = rect.left + Math.cos(noAngle) * noSpeed;
+  let newY = rect.top + Math.sin(noAngle) * noSpeed;
+
+  // Bildschirm-Grenzen prüfen und abprallen
+  if (newX < 0) { newX = 0; noAngle = Math.random() * Math.PI - Math.PI/2; }
+  if (newX > window.innerWidth - rect.width) { newX = window.innerWidth - rect.width; noAngle = Math.random() * Math.PI + Math.PI/2; }
+  if (newY < 0) { newY = 0; noAngle = Math.random() * Math.PI; }
+  if (newY > window.innerHeight - rect.height) { newY = window.innerHeight - rect.height; noAngle = -Math.random() * Math.PI; }
+
+  noBtn.style.left = newX + "px";
+  noBtn.style.top = newY + "px";
 }
+
+// Bewegungs-Loop
+setInterval(() => {
+  moveNoButton({clientX: -1000, clientY: -1000}); // Dummy-Mauskoordinaten, damit er weiter läuft
+}, 30);
+
+// Mausbewegung ändern Winkel dynamisch
+document.addEventListener('mousemove', (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const dx = e.clientX - (rect.left + rect.width / 2);
+  const dy = e.clientY - (rect.top + rect.height / 2);
+  const distance = Math.sqrt(dx*dx + dy*dy);
+
+  if (distance < 150) {
+    noAngle = Math.random() * 2 * Math.PI;
+  }
+});
 
 function yesClick() {
   yesSize += 0.3;
