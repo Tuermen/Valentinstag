@@ -82,7 +82,6 @@ button {
          src="SAYSOMETHING!YESCHIEF!NOCHIEF!MAYBECHIEF.mp4"
          autoplay
          loop
-         muted
          controls
          style="margin-top:20px;">
   </video>
@@ -93,24 +92,23 @@ let yesSize = 1;
 let yesClickCount = 0;
 
 const noBtn = document.getElementById("no");
-
-document.addEventListener('mousemove', (e) => {
-  moveNoButton(e);
-});
-
-// Dynamischer NEIN-Button, immer sichtbar, niemals außerhalb des Fensters
-// Zufällige Richtung
 let noAngle = Math.random() * 2 * Math.PI;
 let noSpeed = 5;
+let moving = false;
 
-// NEIN-Button dynamisch, immer sichtbar
-function moveNoButton(e) {
+// Maus über NEIN-Button starten Bewegung
+noBtn.addEventListener('mouseenter', () => { moving = true; });
+
+// Maus verlässt NEIN-Button stoppen Bewegung
+noBtn.addEventListener('mouseleave', () => { moving = false; });
+
+// Bewegung nur, wenn Maus über dem Button
+document.addEventListener('mousemove', (e) => {
+  if (!moving) return;
+
   const rect = noBtn.getBoundingClientRect();
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
-
-  const dx = mouseX - (rect.left + rect.width / 2);
-  const dy = mouseY - (rect.top + rect.height / 2);
+  const dx = e.clientX - (rect.left + rect.width / 2);
+  const dy = e.clientY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
   if (distance < 150) {
@@ -120,30 +118,14 @@ function moveNoButton(e) {
   let newX = rect.left + Math.cos(noAngle) * noSpeed;
   let newY = rect.top + Math.sin(noAngle) * noSpeed;
 
-  if (newX < 0) { newX = 0; noAngle = Math.random() * Math.PI - Math.PI/2; }
-  if (newX > window.innerWidth - rect.width) { newX = window.innerWidth - rect.width; noAngle = Math.random() * Math.PI + Math.PI/2; }
-  if (newY < 0) { newY = 0; noAngle = Math.random() * Math.PI; }
-  if (newY > window.innerHeight - rect.height) { newY = window.innerHeight - rect.height; noAngle = -Math.random() * Math.PI; }
+  // Bildschirmgrenzen
+  if (newX < 0) newX = 0;
+  if (newX > window.innerWidth - rect.width) newX = window.innerWidth - rect.width;
+  if (newY < 0) newY = 0;
+  if (newY > window.innerHeight - rect.height) newY = window.innerHeight - rect.height;
 
   noBtn.style.left = newX + "px";
   noBtn.style.top = newY + "px";
-}
-
-// Bewegungsloop für NEIN
-setInterval(() => {
-  moveNoButton({clientX: -1000, clientY: -1000});
-}, 30);
-
-// Mausbewegung ändern Winkel dynamisch
-document.addEventListener('mousemove', (e) => {
-  const rect = noBtn.getBoundingClientRect();
-  const dx = e.clientX - (rect.left + rect.width / 2);
-  const dy = e.clientY - (rect.top + rect.height / 2);
-  const distance = Math.sqrt(dx*dx + dy*dy);
-
-  if (distance < 150) {
-    noAngle = Math.random() * 2 * Math.PI;
-  }
 });
 
 function yesClick() {
