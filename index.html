@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️❤️ Eine Frage an meinen Lieblingsmensch ❤️❤️</title>
+<title>❤️❤️ Eine Frage an meinen Liblingsmensch ❤️❤️</title>
 
 <style>
 body {
@@ -51,7 +51,6 @@ button {
   max-width: 320px;
   border-radius: 15px;
   margin-top: 20px;
-  cursor: pointer; /* macht deutlich, dass man klicken kann */
 }
 </style>
 </head>
@@ -86,6 +85,7 @@ function yesClick() {
     showMeme();
   }
 }
+
 function showMeme() {
   document.body.innerHTML = `
     <div id="finalContent" style="
@@ -106,7 +106,9 @@ function showMeme() {
                src="KSI-YESYESYESNONONO(GreenScreen).mp4" 
                autoplay 
                loop 
+               muted
                style="max-width: 80%; border-radius: 15px;">
+          Dein Browser unterstützt das Video nicht.
         </video>
     </div>
 
@@ -139,9 +141,9 @@ function startConfetti() {
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(255,0,100,0.8)";
     confetti.forEach(c => {
       ctx.beginPath();
-      ctx.fillStyle = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},0.8)`;
       ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
       ctx.fill();
     });
