@@ -69,7 +69,7 @@ button {
 <div class="container" id="questionBox">
   <h1>Demet,<br>willst du meine Valentine sein? ❤️</h1>
   <button id="yes" onclick="yesClick()">JA 💖</button>
-  <button id="no" onmouseover="moveNoButton()">NEIN 😅</button>
+  <button id="no" onmouseover="moveNoButton()">NEIN 🥹</button>
 </div>
 
 <script>
@@ -83,6 +83,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Dynamischer NEIN-Button, immer sichtbar, niemals außerhalb des Fensters
+let noAngle = Math.random() * 2 * Math.PI; // zufällige Start-Richtung für NEIN
+
 function moveNoButton(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
@@ -93,16 +95,19 @@ function moveNoButton(e) {
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  if (distance < 150) { // Trigger Abstand
-    const angle = Math.atan2(dy, dx);
-    const moveDistance = 60; // Schrittweite, kann angepasst werden
+  if (distance < 150) { // Trigger Abstand: Button bewegt sich
+    // Ändere Winkel leicht zufällig, um dynamische Richtung zu erzeugen
+    noAngle += (Math.random() - 0.5) * 0.5;
 
-    let newX = rect.left - Math.cos(angle) * moveDistance;
-    let newY = rect.top - Math.sin(angle) * moveDistance;
+    const moveDistance = 50; // Schrittweite
+    let newX = rect.left + Math.cos(noAngle) * moveDistance;
+    let newY = rect.top + Math.sin(noAngle) * moveDistance;
 
-    // **Begrenzung: immer innerhalb des sichtbaren Fensters**
-    newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
-    newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
+    // Bildschirm-Grenzen prüfen
+    if (newX < 0) { newX = 0; noAngle = Math.PI - noAngle; }
+    if (newX > window.innerWidth - rect.width) { newX = window.innerWidth - rect.width; noAngle = Math.PI - noAngle; }
+    if (newY < 0) { newY = 0; noAngle = -noAngle; }
+    if (newY > window.innerHeight - rect.height) { newY = window.innerHeight - rect.height; noAngle = -noAngle; }
 
     noBtn.style.left = newX + "px";
     noBtn.style.top = newY + "px";
