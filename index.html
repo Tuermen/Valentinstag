@@ -85,24 +85,25 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // NEIN-Button läuft immer weg, aber bleibt innerhalb des Bildschirms
-function moveNoButtonSafe(e) {
+function moveNoButtonRandom(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
 
-  // Abstand zwischen Maus und Button
   const dx = mouseX - (rect.left + rect.width / 2);
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  if (distance < 150) { // Trigger Abstand
+  if (distance < 150) {
     const angle = Math.atan2(dy, dx);
-    const moveDistance = 50; // Schrittweite
 
-    let newX = rect.left - Math.cos(angle) * moveDistance;
-    let newY = rect.top - Math.sin(angle) * moveDistance;
+    // Zufällige Abweichung für chaotisches Verhalten
+    const randomOffset = (Math.random() - 0.5) * Math.PI / 2; // +/- 90 Grad
+    const moveDistance = 40 + Math.random() * 20; // zufällige Geschwindigkeit
+    let newX = rect.left - Math.cos(angle + randomOffset) * moveDistance;
+    let newY = rect.top - Math.sin(angle + randomOffset) * moveDistance;
 
-    // **Begrenze den Button innerhalb des Bildschirms**
+    // Immer innerhalb des Bildschirms
     newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
     newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
 
