@@ -47,11 +47,7 @@ button {
 }
 
 #no {
-  position: absolute;
-  top: 50%;
-  left: 150px; /* Startposition neben JA */
-  transform: translateY(-50%);
-  background: #ddd;
+  position: relative;
 }
 
 .meme {
@@ -78,22 +74,10 @@ button {
 let yesSize = 1;
 let yesClickCount = 0;
 
-function runAway() {
-  const noBtn = document.getElementById("no");
-  const container = document.getElementById("questionBox");
-
-  // Container-Bounds
-  const containerRect = container.getBoundingClientRect();
-
-  // Neue zufällige Position innerhalb des Containers
-  const maxX = containerRect.width - noBtn.offsetWidth;
-  const maxY = containerRect.height - noBtn.offsetHeight;
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+function weg() {
+  const btn = document.getElementById("no");
+  btn.style.left = Math.random() * 200 - 100 + "px";
+  btn.style.top  = Math.random() * 200 - 100 + "px";
 }
 
 function yesClick() {
