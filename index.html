@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️ Dynamischer NEIN-Button ❤️</title>
+<title>❤️❤️ Eine Frage an meinen Lieblingsmensch ❤️❤️</title>
+
 <style>
 body {
   margin: 0;
@@ -47,7 +48,6 @@ button {
 
 #no {
   position: fixed;
-  top: 50%;
   left: 350px;
   transform: translateY(-50%);
   background: #ddd;
@@ -65,6 +65,7 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <div class="container" id="questionBox">
@@ -80,7 +81,7 @@ let yesClickCount = 0;
 const noBtn = document.getElementById("no");
 
 document.addEventListener('mousemove', (e) => {
-  moveNoButtonSafe(e);
+  moveNoButton(e);
 });
 
 // NEIN-Button läuft immer weg, aber bleibt innerhalb des Bildschirms
