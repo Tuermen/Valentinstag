@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-  background: #ffd1dc; /* Sanftes Rosa */
+  background: #ffd1dc;
   padding: 30px;
   border-radius: 15px;
   text-align: center;
@@ -49,8 +49,8 @@ button {
 #no {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 150px; /* Startposition neben JA */
+  transform: translateY(-50%);
   background: #ddd;
 }
 
@@ -79,23 +79,19 @@ let yesSize = 1;
 let yesClickCount = 0;
 
 function runAway() {
-    const noBtn = document.getElementById("no");
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
-    
-    // Berechne maximale Positionen, damit der Button sichtbar bleibt
-    const maxX = window.innerWidth - btnWidth - 10; // 10px Rand
-    const maxY = window.innerHeight - btnHeight - 10;
+  const noBtn = document.getElementById("no");
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-    // Neue zufällige Position
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+  // Berechne zufällige neue Position innerhalb des Bildschirms
+  const padding = 10; // Abstand vom Rand, damit Button nie abgeschnitten wird
+  const x = Math.random() * (window.innerWidth - btnWidth - padding * 2) + padding;
+  const y = Math.random() * (window.innerHeight - btnHeight - padding * 2) + padding;
 
-    // Position setzen
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-    noBtn.style.transform = "none"; // transform zurücksetzen
+  // Setze neue Position
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  noBtn.style.transform = "none"; // damit translate nicht stört
 }
 
 function yesClick() {
