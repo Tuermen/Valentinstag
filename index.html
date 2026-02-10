@@ -9,7 +9,7 @@ body {
   margin: 0;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background: #ffe6ec;
+  background: #ffe6ec; /* Rosa Hintergrund */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,13 +17,14 @@ body {
 }
 
 .container {
-  background: white;
+  background: #ffffffcc; /* leicht transparentes Weiß für den Container */
   padding: 30px;
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   position: relative;
   z-index: 1;
+  max-width: 400px;
 }
 
 h1 {
@@ -50,9 +51,13 @@ button {
 }
 
 .meme {
-  max-width: 320px;
+  max-width: 300px;
+  width: 100%;
   border-radius: 15px;
   margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 </head>
@@ -100,16 +105,14 @@ function showMeme() {
            loop 
            controls
            style="
-             width: 7cm;
-             height: 7cm;
+             width: 300px;
              border-radius: 10px;
              display: block;
-             object-fit: cover;
            ">
     </video>
   `;
 
-  // Konfetti-Canvas hinzufügen, falls noch nicht vorhanden
+  // Konfetti-Canvas hinzufügen
   if (!document.getElementById("confetti")) {
     const canvas = document.createElement("canvas");
     canvas.id = "confetti";
@@ -133,19 +136,50 @@ function showMeme() {
   });
 }
 
-/* Konfetti */
+/* Herz-Konfetti */
 function startConfetti() {
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const confetti = Array.from({length: 200}, () => ({
+  function drawHeart(ctx, x, y, size, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    const topCurveHeight = size * 0.3;
+    ctx.moveTo(x, y + topCurveHeight);
+    ctx.bezierCurveTo(
+      x, y,
+      x - size / 2, y,
+      x - size / 2, y + topCurveHeight
+    );
+    ctx.bezierCurveTo(
+      x - size / 2, y + (size + topCurveHeight) / 2,
+      x, y + (size + topCurveHeight) / 1.5,
+      x, y + size
+    );
+    ctx.bezierCurveTo(
+      x, y + (size + topCurveHeight) / 1.5,
+      x + size / 2, y + (size + topCurveHeight) / 2,
+      x + size / 2, y + topCurveHeight
+    );
+    ctx.bezierCurveTo(
+      x + size / 2, y,
+      x, y,
+      x, y + topCurveHeight
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  const confetti = Array.from({length: 150}, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height - canvas.height,
-    r: Math.random() * 6 + 2,
-    d: Math.random() * 5 + 2,
-    color: `hsl(${Math.random()*360}, 100%, 50%)`,
+    size: Math.random() * 15 + 5,
+    speed: Math.random() * 3 + 2,
+    color: `hsl(${Math.random()*360}, 70%, 60%)`,
     tilt: Math.random() * 10 - 10,
     tiltAngleIncrement: Math.random() * 0.07 + 0.05,
     tiltAngle: 0
@@ -154,32 +188,20 @@ function startConfetti() {
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     confetti.forEach(c => {
-      ctx.beginPath();
-      ctx.lineWidth = c.r;
-      ctx.strokeStyle = c.color;
-      ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
-      ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
-      ctx.stroke();
-    });
-    update();
-  }
-
-  function update() {
-    confetti.forEach(c => {
       c.tiltAngle += c.tiltAngleIncrement;
-      c.y += (Math.cos(c.d) + 3 + c.r/2)/2;
       c.tilt = Math.sin(c.tiltAngle) * 15;
-
+      drawHeart(ctx, c.x + c.tilt, c.y, c.size, c.color);
+      c.y += c.speed;
       if (c.y > canvas.height) {
-        c.y = -10;
+        c.y = -20;
         c.x = Math.random() * canvas.width;
       }
     });
+    requestAnimationFrame(draw);
   }
 
-  setInterval(draw, 20);
+  draw();
 
-  // Anpassung bei Fenstergröße
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
