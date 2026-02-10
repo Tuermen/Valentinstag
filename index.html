@@ -110,7 +110,7 @@ function showMeme() {
                src="KSI-YESYESYESNONONO(GreenScreen).mp4" 
                autoplay 
                loop 
-               muted
+               controls
                style="
                  width: 7cm;
                  height: 7cm;
@@ -127,13 +127,19 @@ function showMeme() {
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
+      z-index: 1;  /* unter den Content, sichtbar hinter Video */
       pointer-events: none;
     "></canvas>
   `;
   startConfetti();
-}
 
+  // Versuche Ton zu starten
+  const video = document.querySelector("video");
+  video.muted = false; // Ton an
+  video.play().catch(() => {
+    console.log("Autoplay mit Ton blockiert. Nutzer muss klicken.");
+  });
+}
 /* Konfetti */
 function startConfetti() {
   const canvas = document.getElementById("confetti");
