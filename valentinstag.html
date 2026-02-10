@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Bestätigung erforderlich</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#no {
+  position: relative;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h2>⚠️ Bestätigung erforderlich</h2>
+  <p>Willst du wissen,<br>wie sehr dein Mann dich liebt? 💘</p>
+
+  <button onclick="ja()">JA ❤️</button>
+  <button id="no" onmouseover="weg()">NEIN ❌</button>
+</div>
+
+<script>
+function weg() {
+  const btn = document.getElementById("no");
+  btn.style.left = Math.random() * 200 - 100 + "px";
+  btn.style.top  = Math.random() * 200 - 100 + "px";
+}
+
+function ja() {
+  document.body.innerHTML = `
+    <div style="text-align:center;font-family:Arial;">
+      <h1>💖 Überraschung 💖</h1>
+      <p>Frohen Valentinstag, meine Liebe!</p>
+      <p>Ich liebe dich mehr,<br>als du jemals „Nein“ klicken könntest 😄</p>
+      <p>❤️❤️❤️</p>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
