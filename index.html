@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-  background: #ffd1dc; /* Sanftes Rosa statt Weiß */
+  background: #ffd1dc; /* Sanftes Rosa */
   padding: 30px;
   border-radius: 15px;
   text-align: center;
@@ -29,7 +29,7 @@ body {
 
 h1 {
   margin-bottom: 25px;
-  color: #880d3b; /* dunkleres Rosa für guten Kontrast */
+  color: #880d3b; /* dunkleres Rosa für Kontrast */
 }
 
 button {
@@ -73,23 +73,61 @@ button {
 
 <script>
 let yesSize = 1;
+let yesClickCount = 0;
 
 function runAway() {
   const noBtn = document.getElementById("no");
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
 
 function yesClick() {
   yesSize += 0.3;
+  yesClickCount++;
   const yesBtn = document.getElementById("yes");
   yesBtn.style.transform = `scale(${yesSize})`;
   yesBtn.style.background = "red";
 
+  if (yesClickCount >= 4) {
+    explodeHearts(yesBtn);
+  }
+
   if (yesSize >= 2) {
     showMeme();
+  }
+}
+
+function explodeHearts(element) {
+  const rect = element.getBoundingClientRect();
+  const xCenter = rect.left + rect.width / 2;
+  const yCenter = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 30; i++) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = xCenter + "px";
+    heart.style.top = yCenter + "px";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    heart.style.zIndex = 2;
+    heart.style.pointerEvents = "none";
+    document.body.appendChild(heart);
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 150 + 50;
+    const duration = Math.random() * 1000 + 1000;
+
+    heart.animate([
+      { transform: `translate(0, 0)`, opacity: 1 },
+      { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
+    ], {
+      duration: duration,
+      easing: "ease-out"
+    });
+
+    setTimeout(() => heart.remove(), duration);
   }
 }
 
@@ -136,7 +174,7 @@ function showMeme() {
   });
 }
 
-/* Herz-Konfetti */
+/* Herz-Konfetti im Hintergrund */
 function startConfettiHearts() {
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
