@@ -88,19 +88,9 @@ function yesClick() {
 
 function showMeme() {
   document.body.innerHTML = `
-    <canvas id="confetti" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    "></canvas>
-
     <div id="finalContent" style="
       position: relative;
-      z-index: 1;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -109,16 +99,37 @@ function showMeme() {
       height: 100vh;
       width: 100vw;
       background: #ffe6ec;
+      overflow: hidden;
+      padding: 20px;
     ">
         <h1>🎉💖 YAYYYY 💖🎉</h1>
-        <p style="font-size:20px;">Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️</p>
+        <p style="font-size:20px; margin-bottom: 20px;">
+          Ich wusste, dass du meine Valentine sein wolltest ❤️ und ich liebe dich über alles ❤️
+        </p>
         <video class="meme" 
                src="KSI-YESYESYESNONONO(GreenScreen).mp4" 
                autoplay 
                loop 
-               style="width:10cm; height:10cm; border-radius: 10px; margin-top: 20px;">
+               muted
+               style="
+                 width: 7cm;
+                 height: 7cm;
+                 border-radius: 10px;
+                 display: block;
+                 object-fit: cover;
+               ">
         </video>
     </div>
+
+    <canvas id="confetti" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    "></canvas>
   `;
   startConfetti();
 }
