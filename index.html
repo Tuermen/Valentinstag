@@ -10,9 +10,6 @@ body {
   height: 100vh;
   font-family: Arial, sans-serif;
   background: #ffe6ec;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
 
@@ -25,6 +22,7 @@ body {
   position: relative;
   z-index: 1;
   max-width: 90%;
+  margin: 50px auto;
 }
 
 h1 {
@@ -49,8 +47,9 @@ button {
 }
 
 #no {
-  position: absolute;
-  left: 200px; /* Start neben JA */
+  position: fixed; /* FIXED sorgt dafür, dass er immer sichtbar bleibt */
+  top: 50%;
+  left: 300px; /* Startposition neben JA */
   transform: translateY(-50%);
   background: #ddd;
   z-index: 1;
@@ -73,7 +72,7 @@ button {
 <div class="container" id="questionBox">
   <h1>Demet,<br>willst du meine Valentine sein? ❤️</h1>
   <button id="yes" onclick="yesClick()">JA 💖</button>
-  <button id="no">NEIN 🥹</button>
+  <button id="no">NEIN 😅</button>
 </div>
 
 <script>
@@ -86,27 +85,24 @@ document.addEventListener('mousemove', (e) => {
   moveNoButton(e);
 });
 
-// Funktion: dynamisch vom Mauszeiger weg bewegen
+// Dynamischer „NEIN“-Button, bleibt immer sichtbar
 function moveNoButton(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
 
-  // Abstand zwischen Maus und Button
   const dx = mouseX - (rect.left + rect.width / 2);
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  // Wenn Maus nahe, Button bewegen
-  if (distance < 150) {
-    // Richtung vom Mauszeiger weg
+  if (distance < 150) { // Trigger Abstand
     const angle = Math.atan2(dy, dx);
-    const moveDistance = 30; // Geschwindigkeit
+    const moveDistance = 40; // Schrittweite
 
     let newX = rect.left - Math.cos(angle) * moveDistance;
     let newY = rect.top - Math.sin(angle) * moveDistance;
 
-    // Begrenzung: Button bleibt innerhalb des Bildschirms
+    // Begrenzung: immer innerhalb des Bildschirms
     newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
     newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
 
