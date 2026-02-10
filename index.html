@@ -99,29 +99,27 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Dynamischer NEIN-Button, immer sichtbar, niemals außerhalb des Fensters
-let noAngle = Math.random() * 2 * Math.PI; // aktuelle Richtung
-let noSpeed = 5; // Geschwindigkeit in Pixeln pro Frame
+// Zufällige Richtung
+let noAngle = Math.random() * 2 * Math.PI;
+let noSpeed = 5;
 
+// NEIN-Button dynamisch, immer sichtbar
 function moveNoButton(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
 
-  // Abstand zwischen Maus und Button
   const dx = mouseX - (rect.left + rect.width / 2);
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  // Wenn Maus nahe, wähle zufällige neue Richtung
   if (distance < 150) {
     noAngle = Math.random() * 2 * Math.PI;
   }
 
-  // Bewege Button in aktueller Richtung
   let newX = rect.left + Math.cos(noAngle) * noSpeed;
   let newY = rect.top + Math.sin(noAngle) * noSpeed;
 
-  // Bildschirm-Grenzen prüfen und abprallen
   if (newX < 0) { newX = 0; noAngle = Math.random() * Math.PI - Math.PI/2; }
   if (newX > window.innerWidth - rect.width) { newX = window.innerWidth - rect.width; noAngle = Math.random() * Math.PI + Math.PI/2; }
   if (newY < 0) { newY = 0; noAngle = Math.random() * Math.PI; }
@@ -131,9 +129,9 @@ function moveNoButton(e) {
   noBtn.style.top = newY + "px";
 }
 
-// Bewegungs-Loop
+// Bewegungsloop für NEIN
 setInterval(() => {
-  moveNoButton({clientX: -1000, clientY: -1000}); // Dummy-Mauskoordinaten, damit er weiter läuft
+  moveNoButton({clientX: -1000, clientY: -1000});
 }, 30);
 
 // Mausbewegung ändern Winkel dynamisch
