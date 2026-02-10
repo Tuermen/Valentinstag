@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️ Dynamischer NEIN-Button ❤️</title>
+<title>❤️❤️ Eine Frage an meinen Lieblingsmensch ❤️❤️</title>
+
 <style>
 body {
   margin: 0;
@@ -46,9 +47,9 @@ button {
 }
 
 #no {
-  position: fixed;
+  position: fixed; /* FIXED sorgt dafür, dass er immer sichtbar bleibt */
   top: 50%;
-  left: 350px;
+  left: 300px; /* Start neben JA */
   transform: translateY(-50%);
   background: #ddd;
   z-index: 1;
@@ -65,6 +66,7 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <div class="container" id="questionBox">
@@ -80,11 +82,11 @@ let yesClickCount = 0;
 const noBtn = document.getElementById("no");
 
 document.addEventListener('mousemove', (e) => {
-  moveNoButtonSafe(e);
+  moveNoButton(e);
 });
 
-// NEIN-Button läuft immer weg, aber bleibt innerhalb des Bildschirms
-function moveNoButtonSafe(e) {
+// Dynamischer NEIN-Button, immer sichtbar, niemals außerhalb des Fensters
+function moveNoButton(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
@@ -96,12 +98,12 @@ function moveNoButtonSafe(e) {
 
   if (distance < 150) { // Trigger Abstand
     const angle = Math.atan2(dy, dx);
-    const moveDistance = 50; // Schrittweite
+    const moveDistance = 60; // Schrittweite, kann angepasst werden
 
     let newX = rect.left - Math.cos(angle) * moveDistance;
     let newY = rect.top - Math.sin(angle) * moveDistance;
 
-    // **Begrenze den Button innerhalb des Bildschirms**
+    // **Begrenzung: immer innerhalb des sichtbaren Fensters**
     newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
     newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
 
@@ -110,7 +112,6 @@ function moveNoButtonSafe(e) {
   }
 }
 
-// JA-Button Klick Logik
 function yesClick() {
   yesSize += 0.3;
   yesClickCount++;
@@ -127,7 +128,6 @@ function yesClick() {
   }
 }
 
-// Herz-Explosion
 function explodeHearts(element) {
   const rect = element.getBoundingClientRect();
   const xCenter = rect.left + rect.width / 2;
@@ -160,7 +160,6 @@ function explodeHearts(element) {
   }
 }
 
-// Video & Herz-Konfetti
 function showMeme() {
   const container = document.getElementById("questionBox");
   container.innerHTML = `
@@ -204,7 +203,7 @@ function showMeme() {
   });
 }
 
-// Herz-Konfetti
+/* Herz-Konfetti */
 function startConfettiHearts() {
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
@@ -253,5 +252,6 @@ function startConfettiHearts() {
   });
 }
 </script>
+
 </body>
 </html>
