@@ -51,6 +51,7 @@ button {
   max-width: 320px;
   border-radius: 15px;
   margin-top: 20px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -126,6 +127,7 @@ function showMeme() {
                  border-radius: 10px;
                  display: block;
                  object-fit: cover;
+                 z-index: 2;
                ">
         </video>
     </div>
@@ -133,11 +135,11 @@ function showMeme() {
 
   startConfetti();
 
-  // Video Ton abspielen – jetzt geht es, weil der Nutzer auf "JA" geklickt hat
+  // Video Ton aktivieren und abspielen
   const video = document.querySelector("video");
   video.muted = false; // Ton an
   video.play().catch(() => {
-    console.log("Ton konnte nicht abgespielt werden.");
+    console.log("Ton konnte nicht abgespielt werden – möglicherweise Autoplay blockiert.");
   });
 }
 
@@ -152,7 +154,7 @@ function startConfetti() {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     r: Math.random() * 6 + 2,
-    d: Math.random() * 5 + 2,
+    d: Math.random() * 3 + 2,
     color: `hsl(${Math.random()*360}, 100%, 50%)`
   }));
 
