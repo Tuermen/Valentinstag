@@ -29,7 +29,7 @@ body {
 
 h1 {
   margin-bottom: 25px;
-  color: #880d3b; /* dunkleres Rosa für Kontrast */
+  color: #880d3b;
 }
 
 button {
@@ -48,6 +48,9 @@ button {
 
 #no {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: #ddd;
 }
 
@@ -58,7 +61,7 @@ button {
   margin-top: 20px;
   display: block;
   margin-left: auto;
-  margin-right: auto; /* zentriert */
+  margin-right: auto;
 }
 </style>
 </head>
@@ -77,10 +80,12 @@ let yesClickCount = 0;
 
 function runAway() {
   const noBtn = document.getElementById("no");
+  // Berechne zufällige Position innerhalb des Bildschirms
   const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
   const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
+  noBtn.style.transform = "none"; // Transform zurücksetzen
 }
 
 function yesClick() {
@@ -90,7 +95,8 @@ function yesClick() {
   yesBtn.style.transform = `scale(${yesSize})`;
   yesBtn.style.background = "red";
 
-  if (yesClickCount >= 4) {
+  // Explosion nach 4 Klicks
+  if (yesClickCount === 4) {
     explodeHearts(yesBtn);
   }
 
@@ -110,14 +116,14 @@ function explodeHearts(element) {
     heart.style.position = "fixed";
     heart.style.left = xCenter + "px";
     heart.style.top = yCenter + "px";
-    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
     heart.style.zIndex = 2;
     heart.style.pointerEvents = "none";
     document.body.appendChild(heart);
 
     const angle = Math.random() * 2 * Math.PI;
-    const distance = Math.random() * 150 + 50;
-    const duration = Math.random() * 1000 + 1000;
+    const distance = Math.random() * 200 + 50;
+    const duration = Math.random() * 1000 + 800;
 
     heart.animate([
       { transform: `translate(0, 0)`, opacity: 1 },
