@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>❤️ Lustiger NEIN-Button ❤️</title>
+<title>❤️ Dynamischer NEIN-Button ❤️</title>
 <style>
 body {
   margin: 0;
@@ -76,32 +76,32 @@ button {
 <script>
 let yesSize = 1;
 let yesClickCount = 0;
+
 const noBtn = document.getElementById("no");
 
-// NEIN-Button zufällig weglaufen
 document.addEventListener('mousemove', (e) => {
-  moveNoButtonRandom(e);
+  moveNoButtonSafe(e);
 });
 
-function moveNoButtonRandom(e) {
+// NEIN-Button läuft immer weg, aber bleibt innerhalb des Bildschirms
+function moveNoButtonSafe(e) {
   const rect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
 
+  // Abstand zwischen Maus und Button
   const dx = mouseX - (rect.left + rect.width / 2);
   const dy = mouseY - (rect.top + rect.height / 2);
   const distance = Math.sqrt(dx*dx + dy*dy);
 
-  if (distance < 150) {
+  if (distance < 150) { // Trigger Abstand
     const angle = Math.atan2(dy, dx);
+    const moveDistance = 50; // Schrittweite
 
-    // Zufällige Abweichung für chaotisches Verhalten
-    const randomOffset = (Math.random() - 0.5) * Math.PI / 2; // +/- 90 Grad
-    const moveDistance = 40 + Math.random() * 20; // zufällige Geschwindigkeit
-    let newX = rect.left - Math.cos(angle + randomOffset) * moveDistance;
-    let newY = rect.top - Math.sin(angle + randomOffset) * moveDistance;
+    let newX = rect.left - Math.cos(angle) * moveDistance;
+    let newY = rect.top - Math.sin(angle) * moveDistance;
 
-    // Immer innerhalb des Bildschirms
+    // **Begrenze den Button innerhalb des Bildschirms**
     newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
     newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
 
@@ -110,7 +110,7 @@ function moveNoButtonRandom(e) {
   }
 }
 
-// JA-Button
+// JA-Button Klick Logik
 function yesClick() {
   yesSize += 0.3;
   yesClickCount++;
@@ -118,8 +118,13 @@ function yesClick() {
   yesBtn.style.transform = `scale(${yesSize})`;
   yesBtn.style.background = "red";
 
-  if (yesClickCount === 4) explodeHearts(yesBtn);
-  if (yesSize >= 2) showMeme();
+  if (yesClickCount === 4) {
+    explodeHearts(yesBtn);
+  }
+
+  if (yesSize >= 2) {
+    showMeme();
+  }
 }
 
 // Herz-Explosion
@@ -146,7 +151,10 @@ function explodeHearts(element) {
     heart.animate([
       { transform: `translate(0, 0)`, opacity: 1 },
       { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
-    ], {duration: duration, easing: "ease-out"});
+    ], {
+      duration: duration,
+      easing: "ease-out"
+    });
 
     setTimeout(() => heart.remove(), duration);
   }
@@ -191,7 +199,9 @@ function showMeme() {
 
   const video = document.querySelector("video");
   video.muted = false;
-  video.play().catch(() => console.log("Ton konnte nicht abgespielt werden."));
+  video.play().catch(() => {
+    console.log("Ton konnte nicht abgespielt werden.");
+  });
 }
 
 // Herz-Konfetti
