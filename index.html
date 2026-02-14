@@ -83,19 +83,26 @@ let yesSize = 1;
 let yesClickCount = 0;
 
 const noBtn = document.getElementById("no");
-let noAngle = Math.random() * 2 * Math.PI;
-let noSpeed = 5;
-let moving = false;
 
-// Maus über NEIN-Button starten Bewegung
-noBtn.addEventListener('mouseenter', () => { moving = true; });
+function teleportButton() {
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-// Maus verlässt NEIN-Button stoppen Bewegung
-noBtn.addEventListener('mouseleave', () => { moving = false; });
+  const maxX = window.innerWidth - btnWidth;
+  const maxY = window.innerHeight - btnHeight;
 
-// Bewegung nur, wenn Maus über dem Button
-document.addEventListener('mousemove', (e) => {
-  if (!moving) return;
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+}
+
+// Teleportiert bei Hover
+noBtn.addEventListener("mouseenter", teleportButton);
+
+// Optional: Auch bei Klick teleportieren
+noBtn.addEventListener("click", teleportButton);
 
   const rect = noBtn.getBoundingClientRect();
   const dx = e.clientX - (rect.left + rect.width / 2);
